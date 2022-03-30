@@ -8,10 +8,12 @@ class UsersController < ApplicationController
     render json: @users, status: :ok
   end
 
+  # GET /users/:id
   def show
     render json: @user, status: :ok
   end
 
+  # POST /users
   def create
     @user = User.new(user_params)
     if @user.save
@@ -21,12 +23,14 @@ class UsersController < ApplicationController
     end
   end
 
+  # PUT /users/:id
   def update
     unless @user.update(user_params)
       render json: {erros: @user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
+  # DELETE /users/:id
   def destroy
     @user.destroy
   end
