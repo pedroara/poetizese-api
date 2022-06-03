@@ -4,8 +4,9 @@ module Api
       def self.call(object)
         {
           id: object.id,
-          name: object.name,
+          name: object.username,
           username: object.username,
+          email: object.email,
         }
       end
     end

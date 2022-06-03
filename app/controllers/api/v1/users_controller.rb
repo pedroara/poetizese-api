@@ -2,7 +2,7 @@ module Api
   module V1
     class UsersController < ApplicationController
       skip_before_action :authenticate_request, only: [:create]
-      before_action :set_user, only: [:show, :destroy]
+      before_action :set_user, only: [:show, :destroy, :update]
 
       # GET /users
       def index
@@ -12,7 +12,7 @@ module Api
 
       # GET /users/:id
       def show
-        render json: @user, status: :ok
+        render json: Api::V1::UserSerializer.call(@user), status: :ok
       end
 
       # POST /users
@@ -27,9 +27,14 @@ module Api
 
       # PUT /users/:id
       def update
+        
         unless @user.update(user_params)
           render json: {erros: @user.errors.full_messages}, status: :unprocessable_entity
         end
+
+        @user.update(user_params)
+
+        render json: Api::V1::UserSerializer.call(@user)
       end
 
       # DELETE /users/:id

@@ -23,22 +23,20 @@ module Api
 
       # POST /posts
       def create
-        if(params[:user_id].nil?)
-          return render json: { errors: "You must pass user_id as parameter for create a post" }, status: :unprocessable_entity
-        end
-
         @post = Post.new(post_params)
-        if @post.save
+
+        if @post.valid? 
+          @post.save
           render json: @post, status: :created
         else
-          render json: { erros: @post.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
       # PUT /posts/:id
       def update
         unless @post.update(post_params)
-          render json: {erros: @post.errors.full_messages}, status: :unprocessable_entity
+          render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
@@ -50,7 +48,7 @@ module Api
       private
 
       def post_params
-        params.permit(:title, :content, :user_id)
+        params.permit(:title, :content, :user_id, :category_id)
       end
 
       def set_post

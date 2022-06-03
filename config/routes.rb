@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   namespace :api do
     defaults(format: :json) do
       namespace :v1 do
+        resources :categories, only: [:index]
         resources :users
         resources :posts
       end
